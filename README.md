@@ -8,7 +8,6 @@
 ![Status](https://img.shields.io/badge/Project-Working-success?style=for-the-badge)
 
 
-
 ---
 
 # 📌 Project Overview
@@ -208,11 +207,9 @@ AI_Assistant/                          # Root project folder containing the comp
 
 # 📸 Project Screenshot
 
-<div align="center">
-
-![Homepage](assets/homepage.png)
-
-</div>
+<p align="center">
+  <img src="assets/homepage.png" alt="Homepage" />
+</p>
 
 ---
 
