@@ -1,0 +1,95 @@
+{
+    "modules": [
+        {
+            "name": "Introduction Module",
+            "questions": [
+                "Hello! I'm here to help with your health insurance evaluation for ACKO's Platinum product. This will take about 15-20 minutes( You can close in between by saying stop). I'll need some basic information and ask you about your health history to ensure we can provide you with the right coverage. Shall we begin?"
+            ]
+        },
+        {
+            "name": "Basic Information Module",
+            "questions": [
+                "Tell me your name?"
+                ]
+        },
+        {
+            "name": "Medical History Module",
+            "questions": [
+                "Has anyone been diagnosed with any of the following conditions? Say 'yes' or 'no' for each: Diabetes, High blood pressure, Hypothyroid / Hyperthyroid, Asthma / Other Respiratory Disorder, Cataract or Glaucoma, Arthritis, Spondylosis, Ligament tears, Hernia, Kidney disorder, Gall bladder stone, Liver disorders, Heart disease, Stroke/Paralysis, Epilepsy/Seizure disorder, Cancer or tumor, Mental health conditions, Anemia or other blood disorders, Sleep apnea, Fissues/Fistula in ano / Piles, Autoimmune disorders, Other medical conditions, No medical conditions",
+                "If yes, when was it diagnosed?",
+                "What treatment was given - medical, surgical, or hospitalization?",
+                "Are any medications being taken? If yes, please specify names and dosages",
+                "Were there any surgical procedures or hospitalizations? Please provide the year and details",
+                "Are there any ongoing symptoms?",
+                "When was the treatment completed and the last consultation?",
+                "Have there been any recurrences or complications?",
+                "Have there been any relevant investigations in the last 3 months? Please share the results",
+                "Are there any symptoms awaiting doctor consultation?",
+                "Could you share your treating doctor's name and clinic/hospital details?"
+            ]
+        },
+        {
+            "name": "Lifestyle Assessment Module",
+            "questions": [
+                "Has anyone covered in this plan used tobacco products in the past year? This includes smoking or chewing tobacco.",
+                "Has anyone covered in this plan consumed alcohol in the past year?"
+            ]
+        },
+        {
+            "name": "Recent Health Status Module",
+            "questions": [
+                "If you haven't mentioned any medical conditions, have any members taken prescribed medicines in the past few weeks? If yes, what were these medicines for?",
+                "Is anyone currently experiencing any of these symptoms? Fatigue, Unexplained weight loss, Dizziness, Change in bowel habit, Difficulty in breathing, Acidity, Bleeding / Pain in passing stool, Vision problems, Ear/mouth/nose/throat complaints, Swelling/lump/cyst, Difficulty in walking, Swelling of limbs, Pain/burning/numbness in limbs, Other, No symptoms"
+            ]
+        },
+        {
+            "name": "Hospitalization History Module",
+            "questions": [
+                "Has anyone been advised to undergo or has undergone hospitalization for any illness or surgery?",
+                "If past surgery: What year was the hospitalization/surgery? How many days was the hospitalization? Were there any post-surgery complications? How long was the treatment duration? Are there any current symptoms or recurrence?",
+                "If upcoming surgery: What is the diagnosis and expected time of surgery? When was the last doctor consultation? Are medical reports available?"
+            ]
+        },
+        {
+            "name": "Vision Assessment Module",
+            "questions": [
+                "Does anyone currently wear spectacles or contact lenses? If yes: What is the power of the spectacles/lenses?"
+            ]
+        },
+        {
+            "name": "Additional Health Concerns Module",
+            "questions": [
+                "Are there any ongoing health issues or symptoms for which you're planning a doctor visit? If yes: Please share the details",
+                "Have any members undergone health checkups in the past? If yes: Was everything normal? If not, please provide details"
+            ]
+        },
+        {
+            "name": "Insurance History Module",
+            "questions": [
+                "Do you have any existing health insurance coverage, including employer-provided insurance? If yes: Have you made any claims in the last 5 years?",
+                "Has any health insurance proposal ever been declined, postponed, withdrawn, or accepted with special terms? If yes: Please provide details about the rejection or special terms"
+            ]
+        },
+        {
+            "name": "Female Health Module",
+            "questions": [
+                "Before proceeding: Next, I need to ask about gynecological health for female members. Are you comfortable discussing this? If no: Could you provide contact details for the female member? If yes, proceed:",
+                "Is anyone currently pregnant? If yes: When is the baby due? (1-3, 3-6, or 6-9 months) Are there any pregnancy-related complications? Are there any pregnancy-related medications being taken?",
+                "Has anyone experienced gynecological issues like menstrual complaints, breast lumps, fibroid uterus, or endometriosis? If yes: Please provide details"
+            ]
+        },
+        {
+            "name": "Final Confirmation Module",
+            "questions": [
+                "Is there anything else about your health you'd like to share?",
+                "We've completed your health evaluation. Please confirm that you've understood and provided accurate information to the best of your knowledge."
+            ]
+        },
+        {
+            "name": "Closing Module",
+            "questions": [
+                "Thank you for providing all the necessary information. Let me explain the next steps: Our underwriting team will review your information. If medical conditions disclosed: We'll need supporting documents such as consultation paper/discharge summary etc. Do you have these available? You may need to undergo medical tests (Explain specific tests based on conditions). You'll receive instructions via email and WhatsApp within 1-2 days. You can track the progress through the ACKO app. If porting case: Since you're porting your policy, please note the 30-day grace period. We'll prioritize your request for seamless coverage."
+            ]
+        }
+    ]
+}

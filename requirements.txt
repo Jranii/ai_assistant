@@ -1,0 +1,13 @@
+transformers
+torch
+accelerate
+scipy
+sentencepiece
+speechrecognition
+pyaudio
+python-dotenv
+flask
+gTTS
+pytesseract
+Pillow
+werkzeug

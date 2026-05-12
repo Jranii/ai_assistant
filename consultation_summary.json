@@ -1,0 +1,21 @@
+{
+    "summary": "ACKO Platinum Health Insurance",
+    "full_transcript": [
+        {
+            "role": "doctor",
+            "content": "Hello! I'm here to help with your health insurance evaluation for ACKO's Platinum product. This will take about 15-20 minutes( You can close in between by saying stop). I'll need some basic information and ask you about your health history to ensure we can provide you with the right coverage. ===Shall we begin?==="
+        },
+        {
+            "role": "customer",
+            "content": "Yes, please."
+        },
+        {
+            "role": "doctor",
+            "content": "Tell me the your name?"
+        },
+        {
+            "role": "customer",
+            "content": "Thank you."
+        }
+    ]
+}

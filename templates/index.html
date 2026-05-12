@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Medical Assistant</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+                Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #app-container {
+            width: 95%;
+            max-width: 700px;
+            height: 90vh;
+            background: #fff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+        #chat-window {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        .doctor {
+            justify-content: flex-start;
+        }
+        .patient {
+            justify-content: flex-end;
+        }
+        .message p {
+            margin: 0;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+        .doctor p {
+            background-color: #e9ecef;
+            color: #333;
+        }
+        .patient p {
+            background-color: #007bff;
+            color: white;
+        }
+        .system p {
+            font-style: italic;
+            color: #6c757d;
+            text-align: center;
+            background-color: transparent;
+            width: 100%;
+        }
+        #controls {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex; 
+            justify-content: center; 
+            gap: 15px; 
+            align-items: center;
+        }
+        button {
+            padding: 12px 25px;
+            margin: 5px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        #start-btn,
+        #new-consult-btn {
+            background-color: #28a745;
+        }
+        #upload-btn {
+            background-color: #6f42c1;
+        }
+        #listen-btn {
+            background-color: #17a2b8;
+        }
+        #listen-btn.listening {
+            background-color: #dc3545;
+            animation: pulse 1.5s infinite;
+        }
+        #listen-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+            }
+        }
+        #audio-player {
+            width: 100%;
+            margin-top: 10px;
+        }
+        #image-form {
+            margin: 0;
+        }
+
+        #image-summary {
+            padding: 16px 10px 8px 10px;
+            color: #16537e;
+            background-color: #edf4fb;
+            margin: 10px auto 0 auto;
+            border-radius: 12px;
+            min-height: 30px;
+            text-align: left;
+            max-width: 680px;
+            white-space: pre-wrap;
+            max-height: 300px;      /* Add this line for max box height */
+            overflow-y: auto;       /* Add this line for scroll bar */
+        }
+        
+        #image-summary.error {
+            color: #a80018;
+            background-color: #fff0f0;
+        }
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <header>AI Medical Co-Pilot</header>
+        <div id="chat-window"></div>
+        <div id="image-summary"></div>
+        <div id="controls">
+            <button id="start-btn">Start Consultation</button>
+            
+            <form id="image-form" enctype="multipart/form-data">
+                <input type="file" name="image" id="image-input" accept="image/*" required />
+                <button type="button" id="upload-btn">Upload Image</button>
+            </form>
+
+            <button id="listen-btn" style="display:none;" disabled>Click and Speak</button>
+            <button id="new-consult-btn" style="display:none;">Start New Consultation</button>
+            <audio id="audio-player" controls style="display:none;"></audio>
+        </div>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById("start-btn");
+        const listenBtn = document.getElementById("listen-btn");
+        const newConsultBtn = document.getElementById("new-consult-btn");
+        const chatWindow = document.getElementById("chat-window");
+        const audioPlayer = document.getElementById("audio-player");
+        const imageForm = document.getElementById("image-form");
+        const uploadBtn = document.getElementById("upload-btn");
+        const imageInput = document.getElementById("image-input");
+        const imageSummaryDiv = document.getElementById("image-summary");
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = "en-IN";
+            recognition.interimResults = false;
+        } else {
+            alert("Sorry, your browser does not support Speech Recognition. Please use Google Chrome.");
+        }
+
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement("div");
+            messageDiv.classList.add("message", sender);
+            const messageP = document.createElement("p");
+            messageP.textContent = text;
+            messageDiv.appendChild(messageP);
+            chatWindow.appendChild(messageDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        async function startNewSession() {
+            chatWindow.innerHTML = "";
+            addMessage("Starting new consultation...", "system");
+            const res = await fetch("/start", { method: "POST" });
+            const data = await res.json();
+            addMessage(data.question, "doctor");
+            if (data.audio_url) {
+                audioPlayer.src = data.audio_url;
+                audioPlayer.style.display = "block";
+                audioPlayer.play();
+            } else {
+                audioPlayer.style.display = "none";
+            }
+            startBtn.style.display = "none";
+            newConsultBtn.style.display = "none";
+            listenBtn.style.display = "inline-block";
+            listenBtn.disabled = false;
+            imageSummaryDiv.textContent = "";
+        }
+
+        async function getNextQuestion(response) {
+            listenBtn.disabled = true;
+            const res = await fetch("/send_response", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ response: response }),
+            });
+            return res.json();
+        }
+
+        startBtn.addEventListener("click", startNewSession);
+        newConsultBtn.addEventListener("click", startNewSession);
+
+        listenBtn.addEventListener("click", () => {
+            if (recognition && !listenBtn.disabled) {
+                listenBtn.textContent = "Listening...";
+                listenBtn.classList.add("listening");
+                recognition.start();
+            }
+        });
+
+        recognition.onresult = async (event) => {
+            const userText = event.results[0][0].transcript;
+            addMessage(userText, "patient");
+            const data = await getNextQuestion(userText);
+
+            if (data.final_summary) {
+                addMessage(data.final_summary.replace(/---/g, ""), "doctor");
+                audioPlayer.style.display = "none";
+                listenBtn.style.display = "none";
+                newConsultBtn.style.display = "inline-block";
+            } else if (data.question) {
+                addMessage(data.question, "doctor");
+                if (data.audio_url) {
+                    audioPlayer.src = data.audio_url;
+                    audioPlayer.style.display = "block";
+                    audioPlayer.play();
+                } else {
+                    audioPlayer.style.display = "none";
+                }
+                listenBtn.disabled = false;
+            }
+        };
+
+        recognition.onend = () => {
+            listenBtn.textContent = "Click and Speak";
+            listenBtn.classList.remove("listening");
+        };
+
+        recognition.onerror = (event) => {
+            addMessage(
+                `Speech recognition error: ${event.error}. Please try again.`,
+                "system"
+            );
+            listenBtn.disabled = false;
+        };
+
+        // --- Image upload button logic ---
+        uploadBtn.addEventListener("click", () => {
+            imageInput.click();
+        });
+
+        imageInput.addEventListener("change", () => {
+            if (imageInput.files.length === 0) return;
+            imageSummaryDiv.textContent = "Processing image...";
+            imageSummaryDiv.classList.remove("error");
+
+            let formData = new FormData();
+            formData.append("image", imageInput.files[0]);
+
+            fetch("/upload_image", {
+                method: "POST",
+                body: formData,
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.summary) {
+                        imageSummaryDiv.textContent = data.summary;
+                        imageSummaryDiv.classList.remove("error");
+                    } else {
+                        imageSummaryDiv.textContent = data.error || "Unknown error processing image.";
+                        imageSummaryDiv.classList.add("error");
+                    }
+                })
+                .catch((err) => {
+                    imageSummaryDiv.textContent = "Upload failed: " + err;
+                    imageSummaryDiv.classList.add("error");
+                });
+        });
+    </script>
+</body>
+</html>

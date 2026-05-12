@@ -1,0 +1,1328 @@
+# AI-Enabled Real-Time Voice Transcription & Reflexive Question Generator
+
+## Project Overview
+
+This project is an AI-powered healthcare consultation assistant built using Flask, Hugging Face Transformers, OpenAI Whisper, and NLP-based conversational AI modules.
+
+The system simulates a doctor-patient interaction where:
+
+- The system asks predefined medical questions
+- The patient responds using voice
+- Speech is converted into text in real time
+- AI analyzes patient responses
+- Context-aware reflexive follow-up questions are generated
+- A final medical summary is produced automatically
+
+The application supports:
+- Real-time speech-to-text
+- Dynamic AI-generated follow-up questions
+- Medical consultation flow management
+- AI-generated consultation summaries
+- OCR-based image text extraction
+- Text-to-speech doctor responses
+
+---
+
+# Core Features
+
+## 1. Real-Time Voice Transcription
+Uses OpenAI Whisper model to:
+- Capture microphone audio
+- Detect language automatically
+- Convert speech into text
+
+Supported Languages:
+- English
+- Hindi
+
+---
+
+## 2. AI Reflexive Question Generation
+Uses Microsoft Phi-2 transformer model to:
+- Analyze patient responses
+- Generate medically relevant follow-up questions
+- Maintain contextual conversation flow
+
+Example:
+Doctor: Do you smoke?
+Patient: Yes occasionally.
+
+AI Follow-Up:
+"How many cigarettes do you smoke per day?"
+
+---
+
+## 3. Medical Consultation Flow
+The consultation follows:
+- Structured medical script
+- Dynamic AI-generated reflexive questions
+- Conversation history tracking
+
+---
+
+## 4. AI Medical Summary Generation
+Uses FLAN-T5 model by Google to:
+- Analyze complete consultation transcript
+- Generate concise medical summaries
+- Highlight important medical risks
+
+---
+
+## 5. OCR Image Upload Support
+Users can upload:
+- Medical reports
+- Prescriptions
+- Lab results
+
+The system:
+- Extracts text using OCR (Tesseract)
+- Generates AI summaries from extracted text
+
+---
+
+## 6. Text-to-Speech Support
+Doctor questions are converted into speech using gTTS.
+
+This allows:
+- Audio-based interaction
+- Better accessibility
+- Natural conversational experience
+
+---
+
+# Technologies Used
+
+## Backend
+- Python
+- Flask
+
+## AI / NLP Models
+- OpenAI Whisper
+- Microsoft Phi-2
+- Google FLAN-T5
+
+## AI Libraries
+- Hugging Face Transformers
+- PyTorch
+
+## Speech & Audio
+- gTTS
+- SpeechRecognition
+
+## OCR
+- pytesseract
+- Pillow
+
+## Frontend
+- HTML
+- JavaScript
+- Web Speech API
+
+---
+
+# Project Structure
+
+```bash
+AI_Assistant/                          # Root project folder containing the complete AI healthcare assistant application
+│
+├── app.py                             # Main Flask backend application handling routes, API calls, conversation flow, TTS, OCR, and frontend communication
+│
+├── config.py                          # Centralized configuration file for environment variables, logging setup, and application-level settings
+│
+├── medical_script.json                # Structured predefined medical questionnaire used during consultation flow
+│
+├── requirements.txt                   # List of all Python dependencies/packages required to run the project
+│
+├── README.md                          # Complete project documentation, setup guide, workflow explanation, and developer handover notes
+│
+├── uploads/                           # Stores uploaded images temporarily for OCR processing (created automatically during runtime)
+│
+├── question.mp3                       # Generated doctor audio question file using gTTS (runtime generated)
+│
+├── consultation_summary.json          # Final generated consultation summary and transcript output (runtime generated)
+│
+├── modules/                           # Folder containing all core AI/NLP/business logic modules
+│   │
+│   ├── __init__.py                    # Marks 'modules' directory as a Python package so internal modules can be imported
+│   │
+│   ├── nlu.py                         # Natural Language Understanding module using Microsoft Phi-2 for AI follow-up question generation
+│   │
+│   ├── state_manager.py               # Handles conversation state, question tracking, and conversation history management
+│   │
+│   ├── summary.py                     # Generates final medical summaries using Google FLAN-T5 transformer model
+│   │
+│   └── transcription.py               # Handles real-time speech-to-text transcription using OpenAI Whisper model
+│
+└── templates/                         # Flask HTML template directory
+    │
+    └── index.html                     # Frontend user interface containing chat UI, buttons, speech handling, and API communication logic
+---
+
+# File-by-File Explanation
+
+---
+
+## app.py
+
+Main Flask web application.
+
+Responsibilities:
+- Initializes Flask server
+- Handles frontend routes
+- Manages API endpoints
+- Starts consultation
+- Processes patient responses
+- Generates doctor audio
+- Handles image uploads
+- Performs OCR processing
+
+Main Routes:
+- `/`
+- `/start`
+- `/send_response`
+- `/upload_image`
+
+---
+
+## config.py
+
+Stores application configuration settings.
+
+Contains:
+- Log levels
+- Environment variable handling
+- Timeout configurations
+
+---
+
+## medical_script.json
+
+Contains predefined medical interview questions.
+
+Structure Example:
+
+```json
+{
+  "modules": [
+    {
+      "name": "General Health",
+      "questions": [
+        "How are you feeling today?",
+        "Do you have fever?"
+      ]
+    }
+  ]
+}
+```
+
+---
+
+## modules/nlu.py
+
+Natural Language Understanding module.
+
+Responsibilities:
+- Load Phi-2 model
+- Analyze patient responses
+- Generate contextual follow-up questions
+
+---
+
+## modules/state_manager.py
+
+Manages:
+- Consultation state
+- Conversation history
+- Current module/question tracking
+
+Acts as the memory manager of the system.
+
+---
+
+## modules/summary.py
+
+Uses FLAN-T5 model to:
+- Generate final consultation summaries
+- Highlight medical risks
+- Produce concise reports
+
+---
+
+## modules/transcription.py
+
+Handles:
+- Speech-to-text conversion
+- Microphone audio capture
+- Language detection
+- Whisper transcription pipeline
+
+NOTE:
+Currently mainly used for CLI version.
+Frontend web version uses browser speech recognition.
+
+---
+
+## templates/index.html
+
+Frontend user interface.
+
+Contains:
+- Chat interface
+- Speech buttons
+- Audio playback
+- AJAX communication with Flask backend
+
+---
+
+# Prerequisites
+
+Before running the project, ensure the following are installed:
+
+## Required Software
+
+### 1. Python
+Version:
+- Python 3.9+
+
+Verify installation:
+
+```bash
+python --version
+```
+
+---
+
+### 2. pip
+Python package manager.
+
+Verify:
+
+```bash
+pip --version
+```
+
+---
+
+### 3. Virtual Environment Support
+
+Usually included with Python.
+
+Verify:
+
+```bash
+python -m venv --help
+```
+
+---
+
+### 4. Modern Browser
+
+Recommended:
+- Google Chrome
+
+Reason:
+- Better Web Speech API support
+
+---
+
+### 5. Working Microphone
+
+Required for:
+- Real-time speech input
+
+---
+
+# Installation Setup
+
+---
+
+# STEP 1: Open Project Folder
+
+Open terminal inside project directory.
+
+Example:
+
+```bash
+cd AI_Assistant
+```
+
+---
+
+# STEP 2: Create Virtual Environment
+
+## Windows
+
+```bash
+python -m venv venv
+```
+
+## macOS / Linux
+
+```bash
+python3 -m venv venv
+```
+
+What this does:
+- Creates isolated Python environment
+- Prevents package conflicts
+- Keeps project dependencies separate
+
+---
+
+# STEP 3: Activate Virtual Environment
+
+## Windows
+
+```bash
+venv\Scripts\activate
+```
+
+## macOS / Linux
+
+```bash
+source venv/bin/activate
+```
+
+After activation you may see:
+
+```bash
+(venv)
+```
+
+before terminal path.
+
+---
+
+# STEP 4: Install Dependencies
+
+```bash
+pip install -r requirements.txt --upgrade
+```
+
+This installs:
+- Flask
+- Transformers
+- Torch
+- gTTS
+- pytesseract
+- Pillow
+- SpeechRecognition
+- etc.
+
+NOTE:
+First installation may take time because AI models and dependencies are large.
+
+---
+
+# STEP 5: Run Application
+
+```bash
+python app.py
+```
+
+Expected Output:
+
+```bash
+* Running on http://127.0.0.1:5000
+```
+
+---
+
+# STEP 6: Open Browser
+
+Open:
+
+```bash
+http://127.0.0.1:5000
+```
+
+Recommended Browser:
+- Google Chrome
+
+---
+# FULL APPLICATION FLOW (VERY DETAILED)
+
+This section explains EXACTLY what happens internally from the moment you save files and run the application, including which file is responsible for each operation.
+
+---
+
+# STEP-BY-STEP COMPLETE SYSTEM FLOW
+
+---
+
+# STEP 1: Developer Saves Files
+
+When developer presses:
+
+```text
+CTRL + S
+```
+
+All updated project files are saved locally.
+
+Main files involved:
+
+```text
+app.py
+config.py
+modules/nlu.py
+modules/summary.py
+modules/state_manager.py
+modules/transcription.py
+templates/index.html
+medical_script.json
+```
+
+Now the latest source code is available on disk for execution.
+
+---
+
+# STEP 2: Developer Runs Application
+
+Command executed from terminal:
+
+```bash
+python app.py
+```
+
+File Executed:
+
+```text
+app.py
+```
+
+Python interpreter starts executing the application from:
+
+```python
+if __name__ == "__main__":
+```
+
+inside:
+
+```text
+app.py
+```
+
+---
+
+# STEP 3: Flask App Initialization
+
+File Responsible:
+
+```text
+app.py
+```
+
+This line executes:
+
+```python
+app = Flask(__name__)
+```
+
+Flask application initializes:
+- local web server
+- API routes
+- request handling
+- frontend rendering system
+
+---
+
+# STEP 4: Python Imports Execute
+
+Files Loaded Into Memory:
+
+```text
+config.py
+modules/nlu.py
+modules/state_manager.py
+modules/summary.py
+```
+
+External libraries also load:
+- Flask
+- torch
+- transformers
+- gTTS
+- pytesseract
+
+This step prepares all modules for execution.
+
+---
+
+# STEP 5: Global STATE Object Initializes
+
+File Responsible:
+
+```text
+app.py
+```
+
+This object initializes:
+
+```python
+STATE = {
+    "state_manager": None,
+    "question_queue": None,
+    "current_question": ""
+}
+```
+
+Purpose:
+- stores consultation state
+- stores active question queue
+- tracks current doctor question
+
+---
+
+# STEP 6: Flask Server Starts
+
+File Responsible:
+
+```text
+app.py
+```
+
+This line executes:
+
+```python
+app.run(debug=True, port=5000)
+```
+
+Flask server starts listening on:
+
+```text
+http://127.0.0.1:5000
+```
+
+---
+
+# STEP 7: User Opens Browser
+
+User opens:
+
+```text
+http://127.0.0.1:5000
+```
+
+Browser sends HTTP GET request to Flask backend running from:
+
+```text
+app.py
+```
+
+---
+
+# STEP 8: Flask Route "/" Executes
+
+File Responsible:
+
+```text
+app.py
+```
+
+This route executes:
+
+```python
+@app.route("/")
+```
+
+Function executed:
+
+```python
+index()
+```
+
+which returns:
+
+```python
+render_template("index.html")
+```
+
+Frontend file loaded:
+
+```text
+templates/index.html
+```
+
+---
+
+# STEP 9: Frontend Loads
+
+File Responsible:
+
+```text
+templates/index.html
+```
+
+Browser renders:
+- HTML
+- CSS
+- JavaScript
+
+Frontend UI displays:
+- Start Consultation button
+- Chat area
+- Speak button
+- Upload image option
+
+---
+
+# STEP 10: User Clicks "Start Consultation"
+
+Frontend File Responsible:
+
+```text
+templates/index.html
+```
+
+Backend File Responsible:
+
+```text
+app.py
+```
+
+Frontend sends POST request to:
+
+```text
+/start
+```
+
+---
+
+# STEP 11: Consultation Initialization Begins
+
+File Responsible:
+
+```text
+app.py
+```
+
+Function executed:
+
+```python
+start_conversation()
+```
+
+System initializes:
+- state manager
+- question queue
+- consultation state
+
+---
+
+# STEP 12: Medical Script Loads
+
+Files Responsible:
+
+```text
+modules/state_manager.py
+medical_script.json
+```
+
+Inside:
+
+```python
+ConsultationStateManager()
+```
+
+the file:
+
+```text
+medical_script.json
+```
+
+is opened and loaded.
+
+Questions are extracted from:
+
+```json
+{
+  "modules": [...]
+}
+```
+
+Questions are inserted into queue using:
+
+```python
+question_queue.append(question)
+```
+
+inside:
+
+```text
+app.py
+```
+
+---
+
+# STEP 13: First Doctor Question Selected
+
+File Responsible:
+
+```text
+app.py
+```
+
+This executes:
+
+```python
+first_question = question_queue.popleft()
+```
+
+This removes first question from queue.
+
+---
+
+# STEP 14: Conversation History Updated
+
+File Responsible:
+
+```text
+modules/state_manager.py
+```
+
+Function executed:
+
+```python
+add_to_history()
+```
+
+Doctor question stored into conversation history.
+
+Example:
+
+```json
+{
+  "role": "doctor",
+  "content": "Do you have fever?"
+}
+```
+
+---
+
+# STEP 15: Text-to-Speech Executes
+
+File Responsible:
+
+```text
+app.py
+```
+
+Function executed:
+
+```python
+text_to_speech()
+```
+
+Library Used:
+- gTTS
+
+Doctor question converted into audio.
+
+Audio file generated:
+
+```text
+question.mp3
+```
+
+---
+
+# STEP 16: Frontend Receives Response
+
+Backend File Responsible:
+
+```text
+app.py
+```
+
+Response returned to frontend:
+
+```json
+{
+  "question": "...",
+  "audio_url": "/question.mp3"
+}
+```
+
+---
+
+# STEP 17: Browser Displays Question
+
+Frontend File Responsible:
+
+```text
+templates/index.html
+```
+
+Frontend:
+- displays doctor question
+- plays generated audio
+- updates chat interface
+
+---
+
+# STEP 18: User Clicks "Speak"
+
+Frontend File Responsible:
+
+```text
+templates/index.html
+```
+
+Browser activates microphone using:
+- Web Speech API
+
+User starts speaking.
+
+---
+
+# STEP 19: Speech Converted to Text
+
+Frontend File Responsible:
+
+```text
+templates/index.html
+```
+
+Browser speech recognition converts:
+
+```text
+voice → text
+```
+
+Example:
+
+```text
+"I have fever since yesterday"
+```
+
+NOTE:
+Current web version uses browser speech recognition.
+
+The file:
+
+```text
+modules/transcription.py
+```
+
+contains Whisper-based transcription logic mainly for CLI/local transcription usage.
+
+---
+
+# STEP 20: Frontend Sends Patient Response
+
+Frontend File Responsible:
+
+```text
+templates/index.html
+```
+
+Backend File Responsible:
+
+```text
+app.py
+```
+
+POST request sent to:
+
+```text
+/send_response
+```
+
+with JSON:
+
+```json
+{
+  "response": "I have fever since yesterday"
+}
+```
+
+---
+
+# STEP 21: Backend Processes Response
+
+File Responsible:
+
+```text
+app.py
+```
+
+Function executed:
+
+```python
+handle_response()
+```
+
+---
+
+# STEP 22: Stop Phrase Check Happens
+
+File Responsible:
+
+```text
+app.py
+```
+
+Function executed:
+
+```python
+normalize_text()
+```
+
+System checks whether patient said:
+- stop
+- goodbye
+- thank you
+- etc.
+
+If stop phrase detected:
+- consultation ends
+
+Otherwise:
+- continue conversation
+
+---
+
+# STEP 23: Patient Response Saved
+
+File Responsible:
+
+```text
+modules/state_manager.py
+```
+
+Function executed:
+
+```python
+add_to_history()
+```
+
+Patient response added into consultation history.
+
+---
+
+# STEP 24: AI Reflexive Question Logic
+
+File Responsible:
+
+```text
+modules/nlu.py
+```
+
+Function executed:
+
+```python
+generate_reflexive_questions()
+```
+
+AI model used:
+
+```text
+Microsoft Phi-2
+```
+
+Phi-2 analyzes:
+- patient response
+- conversation context
+- current medical topic
+
+Then generates intelligent medical follow-up questions.
+
+Example:
+
+Patient:
+```text
+"I smoke daily"
+```
+
+AI Follow-Up:
+```text
+"How many cigarettes do you smoke each day?"
+```
+
+---
+
+# STEP 25: Next Question Selected
+
+File Responsible:
+
+```text
+app.py
+```
+
+Question retrieved from queue using:
+
+```python
+question_queue.popleft()
+```
+
+---
+
+# STEP 26: New Doctor Audio Generated
+
+File Responsible:
+
+```text
+app.py
+```
+
+Function executed:
+
+```python
+text_to_speech()
+```
+
+New doctor question converted into MP3 using gTTS.
+
+---
+
+# STEP 27: Frontend Updates Again
+
+Frontend File Responsible:
+
+```text
+templates/index.html
+```
+
+Frontend:
+- updates chat UI
+- displays next doctor question
+- plays doctor audio
+- waits for next response
+
+---
+
+# STEP 28: Loop Continues
+
+Files Continuously Involved:
+
+```text
+app.py
+templates/index.html
+modules/state_manager.py
+modules/nlu.py
+```
+
+Conversation cycle repeats:
+
+Speak
+→ Convert Speech
+→ Send Response
+→ AI Analyze
+→ Generate Follow-Up
+→ Ask Next Question
+→ Generate Audio
+
+Loop continues until:
+- consultation script finishes
+OR
+- user says STOP
+
+---
+
+# STEP 29: Final Summary Generation
+
+File Responsible:
+
+```text
+modules/summary.py
+```
+
+Function executed:
+
+```python
+generate_summary()
+```
+
+AI model used:
+
+```text
+Google FLAN-T5
+```
+
+Input:
+- complete conversation history
+
+Output:
+- concise medical consultation summary
+
+Example:
+- medical conditions
+- lifestyle habits
+- risk indicators
+
+---
+
+# STEP 30: Final Response Displayed
+
+Files Responsible:
+
+```text
+app.py
+templates/index.html
+```
+
+Frontend displays:
+- final medical summary
+- transcript result
+- consultation completion message
+
+---
+
+# IMAGE UPLOAD FLOW
+
+---
+
+# STEP 1: User Uploads Image
+
+Frontend File Responsible:
+
+```text
+templates/index.html
+```
+
+Examples:
+- prescription
+- medical report
+- lab report
+
+---
+
+# STEP 2: Flask Receives Image
+
+Backend File Responsible:
+
+```text
+app.py
+```
+
+Route executed:
+
+```python
+/upload_image
+```
+
+---
+
+# STEP 3: Image Saved
+
+File Responsible:
+
+```text
+app.py
+```
+
+Uploaded image stored inside:
+
+```text
+uploads/
+```
+
+---
+
+# STEP 4: OCR Executes
+
+Files/Libraries Responsible:
+
+```text
+app.py
+pytesseract
+Pillow (PIL)
+```
+
+System:
+- opens image
+- extracts text using OCR
+
+---
+
+# STEP 5: AI Summary Generated
+
+File Responsible:
+
+```text
+modules/summary.py
+```
+
+Function executed:
+
+```python
+generate_summary()
+```
+
+Extracted OCR text sent into FLAN-T5 summarization model.
+
+---
+
+# STEP 6: Summary Returned
+
+Files Responsible:
+
+```text
+app.py
+templates/index.html
+```
+
+Frontend displays:
+- extracted text summary
+- processed medical insights
+
+
+# Important Notes
+
+## AI Models May Take Time Initially
+
+First launch may take longer because:
+- Models download from Hugging Face
+- Weights load into memory
+
+---
+
+## GPU Recommended
+
+For faster performance:
+- NVIDIA GPU with CUDA support recommended
+
+---
+
+## Browser Recommendation
+
+Use:
+- Google Chrome
+
+Avoid:
+- Older browsers
+
+---
+
+# Future Improvements
+
+Possible Enhancements:
+- Database integration
+- Authentication system
+- Multi-user consultations
+- PDF report export
+- Medical entity extraction
+- Emotion detection
+- Doctor dashboard
+- Cloud deployment
+- Streaming transcription
+- Real-time multilingual translation
+
+---
+
+# Author Notes
+
+This project demonstrates:
+- AI + Healthcare integration
+- Real-time NLP systems
+- Transformer model pipelines
+- Voice-enabled conversational AI
+- End-to-end AI application architecture
+
+It is suitable for:
+- AI/ML portfolios
+- NLP projects
+- Healthcare AI demos
+- Research prototypes
+- Internship showcases
