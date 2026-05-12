@@ -13,6 +13,8 @@ The system simulates a doctor-patient interaction where:
 - Context-aware reflexive follow-up questions are generated
 - A final medical summary is produced automatically
 
+
+
 The application supports:
 - Real-time speech-to-text
 - Dynamic AI-generated follow-up questions
@@ -22,7 +24,9 @@ The application supports:
 - Text-to-speech doctor responses
 
 ---
+## Project Screenshot
 
+![Homepage](assets/homepage.png)
 # Core Features
 
 ## 1. Real-Time Voice Transcription
