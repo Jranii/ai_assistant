@@ -1,5 +1,5 @@
 # AI-Enabled Real-Time Voice Transcription & Reflexive Question Generator
-
+<div align="center">
 
 ![Python](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python)
 ![Flask](https://img.shields.io/badge/Flask-Web_App-black?style=for-the-badge&logo=flask)
@@ -7,7 +7,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-DeepLearning-red?style=for-the-badge&logo=pytorch)
 ![Status](https://img.shields.io/badge/Project-Working-success?style=for-the-badge)
 
-
+</div>
 ---
 
 # 📌 Project Overview
@@ -208,7 +208,7 @@ AI_Assistant/                          # Root project folder containing the comp
 # 📸 Project Screenshot
 
 <p align="center">
-  <img src="assets/homepage.png" alt="Homepage" />
+  <img src="assets/homepage_2.png" alt="Homepage" />
 </p>
 
 ---
